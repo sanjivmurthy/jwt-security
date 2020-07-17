@@ -48,9 +48,14 @@ class HelloWorldController {
 	@Autowired
 	private MyUserDetailsService userDetailsService;
 
-	@RequestMapping({ "/hello" })
-	public String firstPage() {
-		return "Hello World";
+	@RequestMapping({ "/auth" })
+	public String auth() {
+		return "authenticated";
+	}
+
+	@RequestMapping({ "/noauth" })
+	public String noauth() {
+		return "no authentication";
 	}
 
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
@@ -102,7 +107,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable()
-				.authorizeRequests().antMatchers("/authenticate").permitAll().
+				.authorizeRequests().antMatchers("/authenticate", "/noauth").permitAll().
 						anyRequest().authenticated().and().
 						exceptionHandling().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
